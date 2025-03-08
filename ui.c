@@ -1,116 +1,33 @@
-/*
- * Elite Dangerous Colony Tracker - Basic WinAPI GUI
- *
- * This program sets up a simple WinAPI-based GUI with a main window,
- * a menu system, and categorized structure selection for planetary and orbital structures.
- * It includes tier-based selection, a list of required materials, an input box for materials delivered,
- * and a display for remaining materials needed, which updates dynamically.
- */
+#include <Windows.h>
+#include "ui.h"
 
-#include <windows.h>
-#include <stdio.h>
-#include "structure_data.h"  // Include the new structure data header
-
- // Global variables
 const char g_szClassName[] = "EDColonyTracker";
-HWND hTierComboBox, hCategoryComboBox, hStructureComboBox, hMaterialList, hUserMaterialInput, hResultText, hStructureName;
+HWND hComboBox, hComboBox2, hMaterialList, hUserMaterialInput, hResultText;
 
-// Function prototypes
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-void PopulateTiers(HWND);
-void PopulateCategories(HWND);
-void PopulateStructures(HWND, int, int);
-void DisplayMaterials(HWND, int);
-void UpdateRemainingMaterials(HWND);
-
-int deliveredMaterials[3] = { 0 };
-
-// WinMain - Entry point of a Windows application
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    WNDCLASSEX wc = { 0 };
-    HWND hwnd;
-    MSG Msg;
-
-    // Define window class
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.style = 0;
-    wc.lpfnWndProc = WndProc;
-    wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wc.lpszClassName = g_szClassName;
-
-    // Register window class
-    if (!RegisterClassEx(&wc)) {
-        MessageBox(NULL, "Window Registration Failed!", "Error", MB_ICONEXCLAMATION | MB_OK);
-        return 0;
-    }
-
-    // Create the main application window
-    hwnd = CreateWindowEx(
-        WS_EX_CLIENTEDGE, g_szClassName, "Elite Dangerous Colony Tracker", WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 500, 400,
-        NULL, NULL, hInstance, NULL);
-
-    if (hwnd == NULL) {
-        MessageBox(NULL, "Window Creation Failed!", "Error", MB_ICONEXCLAMATION | MB_OK);
-        return 0;
-    }
-
-    ShowWindow(hwnd, nCmdShow);
-    UpdateWindow(hwnd);
-
-    // Message loop
-    while (GetMessage(&Msg, NULL, 0, 0) > 0) {
-        TranslateMessage(&Msg);
-        DispatchMessage(&Msg);
-    }
-    return Msg.wParam;
-}
-
-// Window Procedure - Handles window messages
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
     case WM_CREATE: {
-        hTierComboBox = CreateWindow("COMBOBOX", NULL, WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
+        // Create a combo box to select Tier
+        hComboBox = CreateWindowW(L"COMBOBOX", NULL, WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
             20, 20, 200, 100, hwnd, (HMENU)1, NULL, NULL);
-        PopulateTiers(hTierComboBox);
+        PopulateTier(hComboBox);
 
-        hCategoryComboBox = CreateWindow("COMBOBOX", NULL, WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
+        // Second Combo Box Containing Structure Categories
+        hComboBox2 = CreateWindowW(L"COMBOBOX", NULL, WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
             20, 60, 200, 100, hwnd, (HMENU)2, NULL, NULL);
 
-        hStructureComboBox = CreateWindow("COMBOBOX", NULL, WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
-            20, 100, 200, 100, hwnd, (HMENU)3, NULL, NULL);
-
-        hStructureName = CreateWindow("STATIC", "Structure: ", WS_CHILD | WS_VISIBLE,
-            20, 140, 200, 20, hwnd, NULL, NULL, NULL);
-
-        hMaterialList = CreateWindow("LISTBOX", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER,
-            20, 170, 200, 100, hwnd, (HMENU)4, NULL, NULL);
-
-        hUserMaterialInput = CreateWindow("EDIT", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL,
-            250, 170, 100, 20, hwnd, (HMENU)5, NULL, NULL);
-
-        hResultText = CreateWindow("STATIC", "Remaining Materials: ", WS_CHILD | WS_VISIBLE,
-            250, 200, 200, 20, hwnd, NULL, NULL, NULL);
+        // Placeholder: Additional UI elements like lists and buttons can be added here
         break;
     }
     case WM_COMMAND: {
         if (HIWORD(wParam) == CBN_SELCHANGE && LOWORD(wParam) == 1) {
-            EnableWindow(hCategoryComboBox, TRUE);
-        }
-        if (HIWORD(wParam) == CBN_SELCHANGE && LOWORD(wParam) == 2) {
-            int selectedTier = SendMessage(hTierComboBox, CB_GETCURSEL, 0, 0);
-            int selectedCategory = SendMessage(hCategoryComboBox, CB_GETCURSEL, 0, 0);
-            PopulateStructures(hStructureComboBox, selectedTier, selectedCategory);
-        }
-        if (HIWORD(wParam) == CBN_SELCHANGE && LOWORD(wParam) == 3) {
-            int selectedIndex = SendMessage(hStructureComboBox, CB_GETCURSEL, 0, 0);
-            SetWindowText(hStructureName, structures[selectedIndex].name);
-            DisplayMaterials(hMaterialList, selectedIndex);
-        }
-        if (HIWORD(wParam) == EN_CHANGE && LOWORD(wParam) == 5) {
-            UpdateRemainingMaterials(hwnd);
+            // Enable the second combo box when option is selected in the first combo box
+            EnableWindow(hComboBox2, TRUE);
+            // Populate the second combo box with items (placeholder)
+            SendMessage(hComboBox2, CB_RESETCONTENT, 0, 0);
+            SendMessage(hComboBox2, CB_ADDSTRING, 0, (LPARAM)L"Option 1");
+            SendMessage(hComboBox2, CB_ADDSTRING, 0, (LPARAM)L"Option 2");
+            SendMessage(hComboBox2, CB_ADDSTRING, 0, (LPARAM)L"Option 3");
         }
         break;
     }
@@ -126,46 +43,46 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return 0;
 }
 
-void PopulateTiers(HWND hWndComboBox) {
-    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)"Tier 1");
-    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)"Tier 2");
-    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)"Tier 3");
+void PopulateTier(HWND hWndComboBox) {
+    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)L"Tier 1");
+    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)L"Tier 2");
+    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)L"Tier 3");
 }
 
-void PopulateCategories(HWND hWndComboBox) {
-    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)"Planetary Structures");
-    SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)"Orbital Structures");
-}
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow) {
+    WNDCLASSEX wc = { 0 };
+    HWND hwnd;
+    MSG Msg;
 
-void PopulateStructures(HWND hWndComboBox, int tier, int category) {
-    SendMessage(hWndComboBox, CB_RESETCONTENT, 0, 0);
-    for (int i = 0; i < NUM_STRUCTURES; i++) {
-        if (structures[i].tier == tier && structures[i].category == category) {
-            void PopulateStructures(HWND hWndComboBox, int tier, int category); {
-                SendMessage(hWndComboBox, CB_RESETCONTENT, 0, 0);
-                for (int i = 0; i < NUM_STRUCTURES; i++) {
-                    if (structures[i].tier == tier && structures[i].category == category) {
-                        SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)structures[i].name);
-                    }
-                }
-            }
-            void PopulateStructures(HWND hWndComboBox, int tier, int category); {
-                void PopulateStructures(HWND hWndComboBox, int tier, int category); {
-                    SendMessage(hWndComboBox, CB_RESETCONTENT, 0, 0);
-                    for (int i = 0; i < NUM_STRUCTURES; i++) {
-                        if (structures[i].tier == tier && structures[i].category == category) {
-                            SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)structures[i].name);
-                        }
-                    }
-                }
-                SendMessage(hWndComboBox, CB_RESETCONTENT, 0, 0);
-                for (int i = 0; i < NUM_STRUCTURES; i++) {
-                    if (structures[i].tier == tier && structures[i].category == category) {
-                        SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)structures[i].name);
-                    }
-                }
-            }
-            SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)structures[i].name);
-        }
+    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.style = 0;
+    wc.lpfnWndProc = WndProc;
+    wc.hInstance = hInstance;
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.lpszClassName = L"EDColonyTracker";
+
+    if (!RegisterClassEx(&wc)) {
+        MessageBox(NULL, L"Window Registration Failed!", L"Error!", MB_ICONEXCLAMATION | MB_OK);
+        return 0;
     }
+
+    hwnd = CreateWindowEx(
+        WS_EX_CLIENTEDGE, L"EDColonyTracker", L"Elite Dangerous Colony Tracker", WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 500, 400,
+        NULL, NULL, hInstance, NULL);
+
+    if (hwnd == NULL) {
+        MessageBox(NULL, L"Window Creation Failed!", L"Error!", MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    ShowWindow(hwnd, nCmdShow);
+    UpdateWindow(hwnd);
+
+    while (GetMessage(&Msg, NULL, 0, 0)) {
+        TranslateMessage(&Msg);
+        DispatchMessage(&Msg);
+    }
+
+    return (int)Msg.wParam;
 }

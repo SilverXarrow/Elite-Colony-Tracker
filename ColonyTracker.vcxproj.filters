@@ -18,15 +18,9 @@
     <ClCompile Include="ui.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="structure_data.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="structure_data.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

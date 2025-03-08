@@ -1,26 +1,2 @@
-﻿  structure_data.c
-  ui.c
-G:\Coding Prjects\ColonyTracker\ui.c(24,6): warning C4028: formal parameter 1 different from declaration
-G:\Coding Prjects\ColonyTracker\ui.c(41,22): warning C4133: '=': incompatible types - from 'const char *' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(45,26): warning C4133: 'function': incompatible types - from 'char [28]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(45,57): warning C4133: 'function': incompatible types - from 'char [6]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(51,27): warning C4133: 'function': incompatible types - from 'const char [16]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(51,42): warning C4133: 'function': incompatible types - from 'char [31]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(56,26): warning C4133: 'function': incompatible types - from 'char [24]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(56,53): warning C4133: 'function': incompatible types - from 'char [6]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(68,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
-G:\Coding Prjects\ColonyTracker\ui.c(75,25): warning C4133: 'function': incompatible types - from 'char [9]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(79,29): warning C4133: 'function': incompatible types - from 'char [9]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(82,30): warning C4133: 'function': incompatible types - from 'char [9]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(85,26): warning C4133: 'function': incompatible types - from 'char [7]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(85,26): warning C4133: 'function': incompatible types - from 'char [12]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(88,25): warning C4133: 'function': incompatible types - from 'char [8]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(91,30): warning C4133: 'function': incompatible types - from 'char [5]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(94,23): warning C4133: 'function': incompatible types - from 'char [7]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(94,23): warning C4133: 'function': incompatible types - from 'char [22]' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(109,68): warning C4133: 'function': incompatible types - from 'const char *' to 'LPCWSTR'
-G:\Coding Prjects\ColonyTracker\ui.c(103,32): warning C4244: 'initializing': conversion from 'LRESULT' to 'int', possible loss of data
-G:\Coding Prjects\ColonyTracker\ui.c(104,36): warning C4244: 'initializing': conversion from 'LRESULT' to 'int', possible loss of data
-G:\Coding Prjects\ColonyTracker\ui.c(108,33): warning C4244: 'initializing': conversion from 'LRESULT' to 'int', possible loss of data
-  Generating Code...
-  ColonyTracker.vcxproj -> G:\Coding Prjects\ColonyTracker\x64\Debug\ColonyTracker.exe
+﻿  ui.c
+  ColonyTracker.vcxproj -> G:\Coding Prjects\ColonyTracker\Elite-Colony-Tracker\x64\Debug\ColonyTracker.exe
